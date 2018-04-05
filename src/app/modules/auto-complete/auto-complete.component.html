@@ -1,0 +1,8 @@
+<div>
+  <input id="pac-input" placeholder="search for location" autocorrect="off" autocapitalize="off" name="address" spellcheck="off" type="text" class="form-control"
+         #search [formControl]="searchControl" [(ngModel)]="address"  style="position: relative; z-index: 2;">
+  <agm-map [latitude]="latitude"  [longitude]="longitude" (mapClick)="changePos($event)" class="form-control">
+    <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true" (dragEnd)="dragEnded($event)">
+    </agm-marker>
+  </agm-map>
+</div>
