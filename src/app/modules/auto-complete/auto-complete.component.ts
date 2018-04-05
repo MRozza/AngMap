@@ -1,7 +1,8 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { } from 'googlemaps';
-import { MapsAPILoader } from '@agm/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {} from 'googlemaps';
+import {MapsAPILoader} from '@agm/core';
+
 @Component({
   selector: 'app-auto-complete-map',
   templateUrl: './auto-complete.component.html',
@@ -18,10 +19,9 @@ export class AutoCompleteComponent implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef;
 
-  constructor(
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone
-  ) { }
+  constructor(private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
+  }
 
   ngOnInit() {
     // set google maps defaults
@@ -69,18 +69,18 @@ export class AutoCompleteComponent implements OnInit {
       let city = '';
       let state = '';
       let country = '';
-      if (status == google.maps.GeocoderStatus.OK) {
+      if (status === google.maps.GeocoderStatus.OK) {
         if (results[0]) {
           for (let i = 0; i < results[0].address_components.length; i++) {
-            if (results[0].address_components[i].types[0] == 'country') {
+            if (results[0].address_components[i].types[0] === 'country') {
               country = results[0].address_components[i].long_name;
               console.log(country);
             }
-            if (results[0].address_components[i].types[0] == 'locality') {
+            if (results[0].address_components[i].types[0] === 'locality') {
               city = results[0].address_components[i].long_name;
               console.log(city);
             }
-            if (results[0].address_components[i].types[0] == 'administrative_area_level_1') {
+            if (results[0].address_components[i].types[0] === 'administrative_area_level_1') {
               state = results[0].address_components[i].long_name;
               console.log(state);
             }
@@ -92,6 +92,7 @@ export class AutoCompleteComponent implements OnInit {
           this.encData['country'] = country;
           this.encData['fullAddress'] = results[0].formatted_address;
           this.address = results[0].formatted_address;
+          console.log(JSON.stringify(this.encData));
           this.onPosChange.emit(this.encData);
         } else {
           alert('No address available');
@@ -99,15 +100,19 @@ export class AutoCompleteComponent implements OnInit {
       }
     });
   }
+
   private setCurrentPosition() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
-        this.zoom = 12;
         this.setLocPoints();
-      });
+      }, this.errorHandler, {maximumAge: 0, timeout: 5000, enableHighAccuracy: true});
     }
+  }
+
+  errorHandler() {
+    console.log('error');
   }
 
   dragEnded(e) {
@@ -115,6 +120,7 @@ export class AutoCompleteComponent implements OnInit {
     this.longitude = e.coords.lng;
     this.setLocPoints();
   }
+
   changePos(e) {
     this.latitude = e.coords.lat;
     this.longitude = e.coords.lng;

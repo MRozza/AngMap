@@ -1,8 +1,8 @@
 agm-map {
   z-index: 1;
   position: absolute;
-  height: 100%;
-  width: 100%;
+  height: inherit;
+  width: inherit;
   padding: 0px;
   border-width: 0px;
   margin: 0px;
@@ -20,5 +20,5 @@ agm-map {
   margin-left: 10%;
   padding: 0 11px 0 13px;
   text-overflow: ellipsis;
-  width: 80%;
+  width: inherit;
 }
