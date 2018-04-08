@@ -10,7 +10,10 @@ import {AutoCompleteModule} from './modules/auto-complete/auto-complete.module';
   ],
   imports: [
     BrowserModule,
-    AutoCompleteModule
+    AutoCompleteModule.forRoot({
+      apiKey: 'AIzaSyCXjC-vsOcYlysZFLkdUg5xpRpbwalmHkY',
+      libraries: ['places']
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

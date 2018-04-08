@@ -1,4 +1,4 @@
-import {Component, ElementRef, NgZone, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {} from 'googlemaps';
 import {MapsAPILoader} from '@agm/core';
@@ -9,13 +9,16 @@ import {MapsAPILoader} from '@agm/core';
   styleUrls: ['./auto-complete.component.css']
 })
 export class AutoCompleteComponent implements OnInit {
-  public latitude: number;
-  public longitude: number;
+  @Input() displayOnly = false;
+  @Input() hideInputField = false;
+  @Input() disableInputField = false;
+  @Input() latitude: number;
+  @Input() longitude: number;
   public searchControl: FormControl;
-  public zoom: number;
+  @Input() zoom: number;
   @Output() public onPosChange: EventEmitter<any> = new EventEmitter<any>();
   public encData = {};
-  public address: string;
+  @Input() address: string;
   @ViewChild('search')
   public searchElementRef: ElementRef;
 
@@ -42,7 +45,6 @@ export class AutoCompleteComponent implements OnInit {
         this.ngZone.run(() => {
           // get the place result
           const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-          console.log(place);
           // verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
@@ -74,15 +76,12 @@ export class AutoCompleteComponent implements OnInit {
           for (let i = 0; i < results[0].address_components.length; i++) {
             if (results[0].address_components[i].types[0] === 'country') {
               country = results[0].address_components[i].long_name;
-              console.log(country);
             }
             if (results[0].address_components[i].types[0] === 'locality') {
               city = results[0].address_components[i].long_name;
-              console.log(city);
             }
             if (results[0].address_components[i].types[0] === 'administrative_area_level_1') {
               state = results[0].address_components[i].long_name;
-              console.log(state);
             }
           }
           this.encData['latitude'] = this.latitude;
@@ -92,7 +91,6 @@ export class AutoCompleteComponent implements OnInit {
           this.encData['country'] = country;
           this.encData['fullAddress'] = results[0].formatted_address;
           this.address = results[0].formatted_address;
-          console.log(JSON.stringify(this.encData));
           this.onPosChange.emit(this.encData);
         } else {
           alert('No address available');
@@ -111,8 +109,8 @@ export class AutoCompleteComponent implements OnInit {
     }
   }
 
-  errorHandler() {
-    console.log('error');
+  errorHandler(e: any) {
+    console.error(JSON.stringify(e));
   }
 
   dragEnded(e) {

@@ -10,15 +10,14 @@ agm-map {
   top: 0px;
 }
 #pac-input {
-  z-index: 0;
-  position: absolute;
+  position: relative;
+  z-index: 2;
   top: 0px;
   background-color: #fff;
   font-family: Roboto;
-  font-size: 15px;
-  font-weight: 300;
-  margin-left: 10%;
-  padding: 0 11px 0 13px;
+  font-size: inherit;
+  font-weight: inherit;
+  margin-left: 5%;
   text-overflow: ellipsis;
-  width: inherit;
+  width: 80%;
 }
